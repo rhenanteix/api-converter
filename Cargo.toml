@@ -12,3 +12,5 @@ csv = "1.1"
 pulldown-cmark = "0.9"
 tokio = { version = "1", features = ["full"] }
 serde_yaml = "0.8" 
+shuttle-runtime = "0.48.0"
+
