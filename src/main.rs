@@ -6,8 +6,12 @@ use serde_json::json;
 use std::collections::HashMap;
 use std::io::Cursor;
 
+
 #[derive(Serialize)]
 struct CSVRow(HashMap<String, String>);
+
+
+
 
 #[post("/csv_to_sql")]
 async fn csv_to_sql(csv_data: String) -> impl Responder {
@@ -103,6 +107,7 @@ async fn json_to_yaml(json_data: String) -> impl Responder {
         Err(_) => HttpResponse::BadRequest().body("Erro ao processar JSON."),
     }
 }
+
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
