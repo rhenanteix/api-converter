@@ -7,11 +7,10 @@ use std::collections::HashMap;
 use std::io::Cursor;
 
 
+
+
 #[derive(Serialize)]
 struct CSVRow(HashMap<String, String>);
-
-
-
 
 #[post("/csv_to_sql")]
 async fn csv_to_sql(csv_data: String) -> impl Responder {
