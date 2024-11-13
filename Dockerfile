@@ -1,19 +1,22 @@
-# Etapa 1: Construção
+# Usa a imagem oficial do Rust como base
 FROM rust:latest AS builder
 
+# Define o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copia apenas o Cargo.toml e o Cargo.lock, caso exista, para baixar as dependências primeiro
+# Copia Cargo.toml e Cargo.lock para aproveitar o cache Docker ao instalar dependências
 COPY Cargo.toml Cargo.lock ./
 
-# Baixa as dependências e as mantém em cache, evitando downloads repetidos
-RUN cargo fetch
+# Instala dependências
+RUN cargo build --release || true
 
-# Agora copia o código fonte e compila
+# Copia o restante do código fonte
 COPY . .
+
+# Compila o projeto em modo release
 RUN cargo build --release
 
-# Etapa 2: Imagem Final
+# Imagem final, mais leve
 FROM debian:buster-slim
 
 # Copia o binário do Rust da etapa de construção
