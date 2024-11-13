@@ -5,7 +5,7 @@ FROM rust:latest
 WORKDIR /app
 
 # Copia o arquivo Cargo.toml e Cargo.lock para o diretório de trabalho
-COPY Cargo.toml Cargo.lock ./
+COPY Cargo.toml ./
 
 # Baixa as dependências, permitindo cache para acelerar o build
 RUN cargo fetch
