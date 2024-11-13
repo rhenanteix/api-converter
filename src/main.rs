@@ -15,9 +15,9 @@ struct CsvData {
 #[derive(Serialize)]
 struct CSVRow(HashMap<String, String>);
 
-#[get("/")]
+#[get("/convert/service")]
 async fn hello_world() -> &'static str {
-    "Api em Rust rodando"
+    "API EM RUST RODANDO EM"
 }
 
 #[post("/convert/csv-to-json")]
