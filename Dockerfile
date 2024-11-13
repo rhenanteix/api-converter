@@ -1,6 +1,10 @@
 # Usa a imagem oficial do Rust como base
 FROM rust:latest AS builder
 
+# Instala as ferramentas necessárias para compilar com musl
+RUN apt-get update && apt-get install -y musl-tools && \
+    rustup target add x86_64-unknown-linux-musl
+
 # Define o diretório de trabalho dentro do container
 WORKDIR /app
 
