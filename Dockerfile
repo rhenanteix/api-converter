@@ -4,7 +4,7 @@ FROM rust:latest AS builder
 WORKDIR /app
 
 # Copia apenas o Cargo.toml e o Cargo.lock, caso exista, para baixar as dependências primeiro
-COPY Cargo.toml Cargo.lock ./
+COPY Cargo.toml ./
 
 # Baixa as dependências e as mantém em cache, evitando downloads repetidos
 RUN cargo fetch
