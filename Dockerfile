@@ -1,23 +1,26 @@
-# Usa a imagem oficial do Rust como base
-FROM rust:latest
+# Etapa 1: Construção
+FROM rust:latest AS builder
 
-# Define o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copia o arquivo Cargo.toml e Cargo.lock para o diretório de trabalho
-COPY Cargo.toml ./
+# Copia apenas o Cargo.toml e o Cargo.lock, caso exista, para baixar as dependências primeiro
+COPY Cargo.toml Cargo.lock ./
 
-# Baixa as dependências, permitindo cache para acelerar o build
+# Baixa as dependências e as mantém em cache, evitando downloads repetidos
 RUN cargo fetch
 
-# Copia o código-fonte do projeto para o diretório de trabalho
+# Agora copia o código fonte e compila
 COPY . .
-
-# Compila o projeto em modo release
 RUN cargo build --release
 
-# Expõe a porta (se necessário)
+# Etapa 2: Imagem Final
+FROM debian:buster-slim
+
+# Copia o binário do Rust da etapa de construção
+COPY --from=builder /app/target/release/api-converter /usr/local/bin/api-converter
+
+# Expõe a porta necessária
 EXPOSE 3000
 
-# Executa o binário da aplicação
-CMD ["./target/release/api-converter"]
+# Define o comando de inicialização
+CMD ["api-converter"]
