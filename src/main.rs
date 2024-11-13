@@ -6,6 +6,7 @@ use serde_json::json;
 use serde_json::Value;
 use std::collections::HashMap;
 use std::io::Cursor;
+use std::env; 
 
 #[derive(Deserialize)]
 struct CsvData {
@@ -115,6 +116,10 @@ async fn json_to_yaml(body: web::Json<Value>) -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    // Obtém a variável de ambiente PORT ou usa 8080 como fallback
+    let port = env::var("PORT").unwrap_or_else(|_| "8080".to_string());
+    
+    // Configura o servidor para escutar na porta correta
     HttpServer::new(|| {
         let cors = Cors::default()
             .allow_any_origin()
@@ -123,12 +128,12 @@ async fn main() -> std::io::Result<()> {
 
         App::new()
             .wrap(cors)
-            .service(hello_world)
-            .service(csv_to_json)
-            .service(csv_to_sql)
-            .service(json_to_yaml)
+            .service(hello_world)  // Exemplo de handler
+            .service(csv_to_json)  // Exemplo de handler
+            .service(csv_to_sql)   // Exemplo de handler
+            .service(json_to_yaml) // Exemplo de handler
     })
-    .bind("127.0.0.1:8080")?
+    .bind(format!("0.0.0.0:{}", port))?  // Agora escuta na porta configurada pela variável de ambiente
     .run()
     .await
 }
