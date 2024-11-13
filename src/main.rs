@@ -113,13 +113,9 @@ async fn json_to_yaml(body: web::Json<Value>) -> impl Responder {
 
 
 
-
+// Exemplo de rotas
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // Obtém a variável de ambiente PORT ou usa 8080 como fallback
-    let port = env::var("PORT").unwrap_or_else(|_| "8080".to_string());
-    
-    // Configura o servidor para escutar na porta correta
     HttpServer::new(|| {
         let cors = Cors::default()
             .allow_any_origin()
@@ -128,12 +124,13 @@ async fn main() -> std::io::Result<()> {
 
         App::new()
             .wrap(cors)
-            .service(hello_world)  // Exemplo de handler
-            .service(csv_to_json)  // Exemplo de handler
-            .service(csv_to_sql)   // Exemplo de handler
-            .service(json_to_yaml) // Exemplo de handler
+            .service(hello_world)
+            .service(csv_to_json)
+            .service(csv_to_sql)
+            .service(json_to_yaml)
     })
-    .bind(format!("0.0.0.0:{}", port))?  // Agora escuta na porta configurada pela variável de ambiente
+    .bind("0.0.0.0:8080")? // Alterado para 0.0.0.0 para garantir que o serviço esteja disponível externamente
     .run()
     .await
 }
+
